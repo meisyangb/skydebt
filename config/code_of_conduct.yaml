@@ -1,0 +1,225 @@
+code_of_conduct:
+  general_principles:
+    - principle: "质量优先"
+      description: "始终将代码质量和系统稳定性放在首位"
+      applies_to: ["architect", "developer", "tester", "reviewer"]
+      
+    - principle: "透明沟通"
+      description: "及时报告进度、问题和风险"
+      applies_to: ["architect", "developer", "tester", "reviewer"]
+      
+    - principle: "持续改进"
+      description: "从错误中学习，不断优化工作方式"
+      applies_to: ["architect", "developer", "tester", "reviewer"]
+      
+    - principle: "协作精神"
+      description: "积极协助其他角色，共同完成目标"
+      applies_to: ["architect", "developer", "tester", "reviewer"]
+
+  behavioral_guidelines:
+    architect:
+      do:
+        - "在开始开发前完成架构设计"
+        - "提供清晰的技术方案和接口定义"
+        - "及时响应开发者的技术问题"
+        - "定期审查架构的合理性"
+      dont:
+        - "不要跳过设计直接进入开发"
+        - "不要忽视技术债务"
+        - "不要做出无法实现的设计"
+        
+    developer:
+      do:
+        - "严格按照设计文档实现功能"
+        - "编写可读、可维护的代码"
+        - "及时提交代码并编写提交信息"
+        - "主动报告开发中的问题"
+      dont:
+        - "不要绕过代码规范"
+        - "不要忽略测试"
+        - "不要提交未完成的代码"
+        
+    tester:
+      do:
+        - "设计全面的测试用例"
+        - "及时报告发现的问题"
+        - "验证问题修复的有效性"
+        - "维护测试用例库"
+      dont:
+        - "不要跳过边界条件测试"
+        - "不要忽视偶发问题"
+        - "不要延迟问题报告"
+        
+    reviewer:
+      do:
+        - "及时完成代码审查"
+        - "提供具体的改进建议"
+        - "关注代码质量和安全性"
+        - "分享最佳实践"
+      dont:
+        - "不要拖延审查时间"
+        - "不要只关注表面问题"
+        - "不要忽略文档审查"
+
+  quality_standards:
+    code_quality:
+      metrics:
+        - name: "代码覆盖率"
+          target: ">= 80%"
+          measurement: "pytest --cov"
+          
+        - name: "代码复杂度"
+          target: "<= 10"
+          measurement: "radon cc"
+          
+        - name: "代码重复率"
+          target: "<= 5%"
+          measurement: "jscpd"
+          
+        - name: "文档覆盖率"
+          target: ">= 90%"
+          measurement: "interrogate"
+          
+      quality_gates:
+        - gate: "代码审查通过"
+          required: true
+        - gate: "单元测试通过"
+          required: true
+        - gate: "无严重安全漏洞"
+          required: true
+        - gate: "性能基准达标"
+          required: false
+
+    documentation_quality:
+      requirements:
+        - "README包含项目介绍和快速开始"
+        - "API文档完整且准确"
+        - "架构图清晰易懂"
+        - "变更日志及时更新"
+        
+      templates:
+        - type: "README"
+          sections: ["简介", "安装", "使用", "API", "贡献", "许可"]
+        - type: "API文档"
+          sections: ["参数", "返回值", "示例", "注意事项"]
+        - type: "变更日志"
+          format: "版本号 - 日期 - 变更内容"
+
+    testing_quality:
+      coverage_requirements:
+        unit_test: ">= 80%"
+        integration_test: ">= 60%"
+        e2e_test: ">= 40%"
+        
+      test_types:
+        - type: "单元测试"
+          scope: "单个函数/类"
+          required: true
+        - type: "集成测试"
+          scope: "模块间交互"
+          required: true
+        - type: "性能测试"
+          scope: "系统性能"
+          required: false
+        - type: "安全测试"
+          scope: "安全漏洞"
+          required: true
+
+  performance_standards:
+    response_time:
+      api_response: "< 200ms"
+      model_inference: "< 5s"
+      image_generation: "< 30s"
+      
+    resource_usage:
+      memory_limit: "4GB"
+      cpu_limit: "80%"
+      gpu_memory_limit: "8GB"
+      
+    throughput:
+      requests_per_second: ">= 100"
+      images_per_minute: ">= 10"
+
+  security_standards:
+    code_security:
+      - "不硬编码敏感信息"
+      - "使用参数化查询防止SQL注入"
+      - "验证所有外部输入"
+      - "使用安全的依赖版本"
+      
+    data_security:
+      - "敏感数据加密存储"
+      - "访问日志记录"
+      - "最小权限原则"
+      
+    dependency_security:
+      - "定期扫描依赖漏洞"
+      - "使用可信的依赖源"
+      - "锁定依赖版本"
+
+  communication_standards:
+    reporting:
+      daily_report:
+        - "完成的任务"
+        - "遇到的问题"
+        - "下一步计划"
+        
+      task_report:
+        - "任务ID和标题"
+        - "执行结果"
+        - "耗时统计"
+        - "遇到的问题"
+        
+    notification:
+      channels:
+        - type: "日志文件"
+          level: "INFO及以上"
+        - type: "控制台"
+          level: "WARNING及以上"
+        - type: "共享记忆"
+          level: "所有"
+          
+      templates:
+        task_start: "[{timestamp}] 任务开始: {task_id} - {title}"
+        task_complete: "[{timestamp}] 任务完成: {task_id} - 耗时: {duration}"
+        task_fail: "[{timestamp}] 任务失败: {task_id} - 原因: {error}"
+        system_alert: "[{timestamp}] 系统告警: {message}"
+
+  compliance_checklist:
+    pre_development:
+      - "需求文档已确认"
+      - "技术方案已评审"
+      - "任务已分解和分配"
+      
+    during_development:
+      - "代码符合规范"
+      - "单元测试已编写"
+      - "文档已更新"
+      
+    pre_release:
+      - "所有测试通过"
+      - "代码审查完成"
+      - "性能达标"
+      - "安全检查通过"
+      - "文档完整"
+
+  violation_handling:
+    minor_violation:
+      examples:
+        - "代码格式不符合规范"
+        - "文档不完整"
+      action: "警告并要求修正"
+      
+    major_violation:
+      examples:
+        - "跳过测试"
+        - "提交未审查代码"
+        - "忽略安全问题"
+      action: "暂停任务，要求整改"
+      
+    critical_violation:
+      examples:
+        - "引入安全漏洞"
+        - "数据泄露风险"
+        - "系统崩溃"
+      action: "立即停止，人工干预"

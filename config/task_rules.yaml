@@ -1,0 +1,229 @@
+task_rules:
+  general_rules:
+    - id: "RULE_001"
+      name: "单一职责原则"
+      description: "每个任务只负责一个明确的功能或目标"
+      enforcement: "强制"
+      
+    - id: "RULE_002"
+      name: "时间限制原则"
+      description: "单个任务执行时间不超过2小时"
+      enforcement: "强制"
+      
+    - id: "RULE_003"
+      name: "依赖前置原则"
+      description: "任务依赖必须在前置任务完成后才能开始"
+      enforcement: "强制"
+      
+    - id: "RULE_004"
+      name: "质量门禁原则"
+      description: "任务完成必须通过质量检查"
+      enforcement: "强制"
+      
+    - id: "RULE_005"
+      name: "文档同步原则"
+      description: "代码变更必须同步更新相关文档"
+      enforcement: "建议"
+
+  task_constraints:
+    time_constraints:
+      max_duration: "2小时"
+      warning_threshold: "1.5小时"
+      timeout_action: "自动暂停并通知"
+      
+    resource_constraints:
+      max_memory: "4GB"
+      max_cpu: "80%"
+      max_gpu_memory: "8GB"
+      
+    dependency_constraints:
+      max_dependencies: 5
+      circular_check: true
+      dependency_timeout: "24小时"
+      
+    retry_constraints:
+      max_retries: 3
+      retry_interval: "5分钟"
+      exponential_backoff: true
+
+  task_priority_rules:
+    levels:
+      - level: 1
+        name: "紧急"
+        description: "阻塞其他任务的关键问题"
+        response_time: "立即"
+        
+      - level: 2
+        name: "高"
+        description: "核心功能开发"
+        response_time: "1小时内"
+        
+      - level: 3
+        name: "中"
+        description: "常规功能开发"
+        response_time: "4小时内"
+        
+      - level: 4
+        name: "低"
+        description: "优化和改进"
+        response_time: "1天内"
+        
+      - level: 5
+        name: "最低"
+        description: "可选功能"
+        response_time: "按需"
+
+    priority_adjustment:
+      - condition: "依赖任务被阻塞"
+        adjustment: "提升优先级"
+      - condition: "任务接近超时"
+        adjustment: "提升优先级"
+      - condition: "资源不足"
+        adjustment: "降低优先级"
+
+  task_status_rules:
+    transitions:
+      pending:
+        allowed_next:
+          - "queued"
+          - "cancelled"
+          
+      queued:
+        allowed_next:
+          - "running"
+          - "paused"
+          - "cancelled"
+          
+      running:
+        allowed_next:
+          - "completed"
+          - "failed"
+          - "paused"
+          
+      paused:
+        allowed_next:
+          - "running"
+          - "cancelled"
+          
+      failed:
+        allowed_next:
+          - "pending"
+          - "cancelled"
+          
+      completed:
+        allowed_next: []
+        
+      cancelled:
+        allowed_next: []
+
+    auto_transitions:
+      - trigger: "依赖完成"
+        from: "pending"
+        to: "queued"
+      - trigger: "超时"
+        from: "running"
+        to: "failed"
+      - trigger: "重试次数用尽"
+        from: "failed"
+        to: "cancelled"
+
+  code_standards:
+    style:
+      - "遵循PEP 8编码规范"
+      - "使用类型提示"
+      - "函数和类必须有文档字符串"
+      
+    naming:
+      - "变量名使用snake_case"
+      - "类名使用PascalCase"
+      - "常量使用UPPER_CASE"
+      - "私有成员使用_single_leading_underscore"
+      
+    documentation:
+      - "每个模块必须有模块级文档"
+      - "公共函数必须有参数和返回值说明"
+      - "复杂逻辑必须有注释说明"
+      
+    testing:
+      - "核心功能必须有单元测试"
+      - "测试覆盖率目标: 80%"
+      - "关键路径必须有集成测试"
+
+  git_commit_rules:
+    commit_message:
+      format: "[{type}] {scope}: {description}"
+      types:
+        - "feat: 新功能"
+        - "fix: 修复问题"
+        - "docs: 文档更新"
+        - "style: 代码格式"
+        - "refactor: 重构"
+        - "test: 测试"
+        - "chore: 构建/工具"
+      examples:
+        - "[feat] models: add text encoder module"
+        - "[fix] diffusion: resolve memory leak issue"
+        - "[docs] README: update installation guide"
+    
+    branch_rules:
+      main_branch: "main"
+      feature_prefix: "feature/"
+      hotfix_prefix: "hotfix/"
+      require_pr: false
+      
+    commit_frequency:
+      - "每个任务完成后必须提交"
+      - "重大里程碑后必须推送"
+      - "每天至少一次推送"
+
+  quality_gates:
+    pre_task:
+      - check: "任务描述完整性"
+        required: true
+      - check: "依赖任务状态"
+        required: true
+      - check: "资源可用性"
+        required: false
+        
+    during_task:
+      - check: "执行时间监控"
+        interval: "5分钟"
+      - check: "资源使用监控"
+        interval: "1分钟"
+      - check: "进度更新"
+        interval: "15分钟"
+        
+    post_task:
+      - check: "代码规范检查"
+        required: true
+      - check: "测试通过"
+        required: true
+      - check: "文档更新"
+        required: false
+      - check: "Git提交"
+        required: true
+
+  error_handling:
+    error_types:
+      - type: "执行错误"
+        action: "记录日志，标记失败，可重试"
+      - type: "超时错误"
+        action: "暂停任务，通知管理员"
+      - type: "资源错误"
+        action: "释放资源，等待重试"
+      - type: "依赖错误"
+        action: "阻塞任务，等待依赖解决"
+        
+    escalation:
+      - level: 1
+        condition: "单次失败"
+        action: "自动重试"
+      - level: 2
+        condition: "连续失败2次"
+        action: "降低优先级重试"
+      - level: 3
+        condition: "连续失败3次"
+        action: "标记为需要人工干预"
+      - level: 4
+        condition: "系统级错误"
+        action: "暂停工作流，通知管理员"

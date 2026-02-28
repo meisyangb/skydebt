@@ -1,57 +1,334 @@
 {
   "pending": [
     {
-      "id": "task_001",
-      "title": "设计像素图片生成模型架构",
-      "description": "设计文字到像素图片的生成模型架构，包括编码器、解码器和扩散模块",
+      "id": "ARCH-001",
+      "title": "设计整体系统架构",
+      "description": "设计文字生成像素图片系统的整体架构，包括模块划分、数据流、接口定义",
       "assigned_agent": "architect",
       "priority": 1,
+      "task_type": "architecture",
       "status": "pending",
+      "phase": "phase_1",
+      "acceptance_criteria": [
+        "架构文档完整",
+        "模块划分清晰",
+        "接口定义明确",
+        "数据流图完整"
+      ],
+      "deliverables": [
+        "docs/architecture.md",
+        "docs/module_diagram.png",
+        "docs/data_flow.md"
+      ],
+      "estimated_duration": "2小时",
+      "dependencies": [],
+      "rules": [
+        "必须输出架构设计文档",
+        "必须包含模块接口定义",
+        "必须提交Git"
+      ],
+      "constraints": {
+        "max_duration": "2小时",
+        "required_outputs": ["architecture.md"]
+      },
       "created_at": "2026-02-28T00:00:00Z"
     },
     {
-      "id": "task_002",
+      "id": "ARCH-002",
+      "title": "设计模型架构",
+      "description": "设计扩散模型的具体架构，包括UNet结构、注意力机制、时间嵌入等",
+      "assigned_agent": "architect",
+      "priority": 1,
+      "task_type": "architecture",
+      "status": "pending",
+      "phase": "phase_1",
+      "acceptance_criteria": [
+        "模型架构图完整",
+        "参数量估算准确",
+        "训练策略明确"
+      ],
+      "deliverables": [
+        "docs/model_architecture.md",
+        "docs/model_config.yaml"
+      ],
+      "estimated_duration": "1.5小时",
+      "dependencies": ["ARCH-001"],
+      "rules": [
+        "必须基于主流扩散模型架构",
+        "必须考虑像素风格特点"
+      ],
+      "constraints": {
+        "max_duration": "2小时"
+      },
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "ARCH-003",
+      "title": "设计数据流水线",
+      "description": "设计数据处理和训练流水线，包括数据预处理、增强、加载等",
+      "assigned_agent": "architect",
+      "priority": 2,
+      "task_type": "architecture",
+      "status": "pending",
+      "phase": "phase_1",
+      "acceptance_criteria": [
+        "数据流图完整",
+        "预处理策略明确",
+        "数据格式定义清晰"
+      ],
+      "deliverables": [
+        "docs/data_pipeline.md"
+      ],
+      "estimated_duration": "1小时",
+      "dependencies": ["ARCH-001"],
+      "rules": [
+        "必须考虑数据效率",
+        "必须支持批量处理"
+      ],
+      "constraints": {
+        "max_duration": "1.5小时"
+      },
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "DEV-001",
       "title": "实现文本编码器模块",
-      "description": "实现CLIP文本编码器，将输入文字转换为特征向量",
+      "description": "使用CLIP实现文本编码器，将输入文字转换为特征向量",
       "assigned_agent": "developer",
-      "priority": 2,
+      "priority": 1,
+      "task_type": "development",
       "status": "pending",
+      "phase": "phase_2",
+      "acceptance_criteria": [
+        "编码器可正常加载",
+        "输出维度正确(512-dim)",
+        "支持批量处理",
+        "单元测试通过"
+      ],
+      "deliverables": [
+        "models/text_encoder.py",
+        "tests/test_text_encoder.py"
+      ],
+      "estimated_duration": "1.5小时",
+      "dependencies": ["ARCH-002"],
+      "rules": [
+        "使用预训练CLIP模型",
+        "必须包含类型提示",
+        "必须编写单元测试",
+        "必须提交Git"
+      ],
+      "constraints": {
+        "max_duration": "2小时",
+        "code_coverage": ">= 80%"
+      },
       "created_at": "2026-02-28T00:00:00Z"
     },
     {
-      "id": "task_003",
-      "title": "实现像素风格扩散模型",
-      "description": "实现扩散模型核心逻辑，支持像素风格图片生成",
+      "id": "DEV-002",
+      "title": "实现扩散模型核心",
+      "description": "实现UNet扩散模型，包括时间嵌入、下采样、上采样等组件",
       "assigned_agent": "developer",
-      "priority": 2,
+      "priority": 1,
+      "task_type": "development",
       "status": "pending",
+      "phase": "phase_2",
+      "acceptance_criteria": [
+        "UNet结构正确",
+        "时间嵌入实现正确",
+        "前向传播正常",
+        "单元测试通过"
+      ],
+      "deliverables": [
+        "models/diffusion.py",
+        "tests/test_diffusion.py"
+      ],
+      "estimated_duration": "2小时",
+      "dependencies": ["ARCH-002"],
+      "rules": [
+        "必须支持条件生成",
+        "必须包含残差连接",
+        "必须编写单元测试"
+      ],
+      "constraints": {
+        "max_duration": "2小时",
+        "code_coverage": ">= 80%"
+      },
       "created_at": "2026-02-28T00:00:00Z"
     },
     {
-      "id": "task_004",
+      "id": "DEV-003",
       "title": "实现图像解码器",
-      "description": "实现VQGAN解码器，将潜空间向量转换为像素图片",
+      "description": "实现VQGAN解码器，将潜空间向量转换为像素风格图片",
+      "assigned_agent": "developer",
+      "priority": 1,
+      "task_type": "development",
+      "status": "pending",
+      "phase": "phase_2",
+      "acceptance_criteria": [
+        "解码器结构正确",
+        "像素量化层实现",
+        "输出尺寸正确(64x64)",
+        "单元测试通过"
+      ],
+      "deliverables": [
+        "models/decoder.py",
+        "tests/test_decoder.py"
+      ],
+      "estimated_duration": "1.5小时",
+      "dependencies": ["ARCH-002"],
+      "rules": [
+        "必须包含像素量化层",
+        "输出必须是像素风格",
+        "必须编写单元测试"
+      ],
+      "constraints": {
+        "max_duration": "2小时"
+      },
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "DEV-004",
+      "title": "实现噪声调度器",
+      "description": "实现扩散过程的噪声调度，包括加噪和去噪过程",
       "assigned_agent": "developer",
       "priority": 2,
+      "task_type": "development",
       "status": "pending",
+      "phase": "phase_2",
+      "acceptance_criteria": [
+        "噪声调度正确",
+        "支持多种调度策略",
+        "单元测试通过"
+      ],
+      "deliverables": [
+        "models/noise_scheduler.py",
+        "tests/test_noise_scheduler.py"
+      ],
+      "estimated_duration": "1小时",
+      "dependencies": ["DEV-002"],
+      "rules": [
+        "支持线性/余弦调度",
+        "必须可配置"
+      ],
+      "constraints": {
+        "max_duration": "1.5小时"
+      },
       "created_at": "2026-02-28T00:00:00Z"
     },
     {
-      "id": "task_005",
-      "title": "编写模型测试用例",
-      "description": "为各个模块编写单元测试和集成测试",
+      "id": "DEV-005",
+      "title": "实现生成器主类",
+      "description": "整合各模块，实现完整的像素图片生成器",
+      "assigned_agent": "developer",
+      "priority": 2,
+      "task_type": "development",
+      "status": "pending",
+      "phase": "phase_2",
+      "acceptance_criteria": [
+        "生成器可正常工作",
+        "支持文字输入",
+        "输出正确尺寸图片",
+        "集成测试通过"
+      ],
+      "deliverables": [
+        "models/generator.py",
+        "tests/test_generator.py"
+      ],
+      "estimated_duration": "2小时",
+      "dependencies": ["DEV-001", "DEV-002", "DEV-003"],
+      "rules": [
+        "必须整合所有模块",
+        "必须支持GPU加速",
+        "必须编写集成测试"
+      ],
+      "constraints": {
+        "max_duration": "2小时"
+      },
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "TEST-001",
+      "title": "编写单元测试",
+      "description": "为所有核心模块编写单元测试",
       "assigned_agent": "tester",
-      "priority": 3,
+      "priority": 2,
+      "task_type": "testing",
       "status": "pending",
+      "phase": "phase_3",
+      "acceptance_criteria": [
+        "测试覆盖率>=80%",
+        "所有测试通过",
+        "边界条件覆盖"
+      ],
+      "deliverables": [
+        "tests/test_*.py"
+      ],
+      "estimated_duration": "2小时",
+      "dependencies": ["DEV-005"],
+      "rules": [
+        "必须覆盖核心功能",
+        "必须包含异常测试"
+      ],
+      "constraints": {
+        "max_duration": "2小时",
+        "coverage": ">= 80%"
+      },
       "created_at": "2026-02-28T00:00:00Z"
     },
     {
-      "id": "task_006",
-      "title": "代码审查和优化",
-      "description": "审查所有代码，提出优化建议和安全检查",
+      "id": "REV-001",
+      "title": "代码审查",
+      "description": "全面审查所有代码，检查质量和安全",
       "assigned_agent": "reviewer",
-      "priority": 4,
+      "priority": 3,
+      "task_type": "review",
       "status": "pending",
+      "phase": "phase_4",
+      "acceptance_criteria": [
+        "代码规范检查通过",
+        "无安全漏洞",
+        "代码可维护性良好"
+      ],
+      "deliverables": [
+        "docs/code_review_report.md"
+      ],
+      "estimated_duration": "1.5小时",
+      "dependencies": ["DEV-005"],
+      "rules": [
+        "必须检查所有模块",
+        "必须提供改进建议"
+      ],
+      "constraints": {
+        "max_duration": "2小时"
+      },
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "DOC-001",
+      "title": "完善README",
+      "description": "更新README，包含完整的使用说明",
+      "assigned_agent": "developer",
+      "priority": 4,
+      "task_type": "documentation",
+      "status": "pending",
+      "phase": "phase_5",
+      "acceptance_criteria": [
+        "安装说明完整",
+        "使用示例清晰",
+        "API文档链接正确"
+      ],
+      "deliverables": [
+        "README.md"
+      ],
+      "estimated_duration": "0.5小时",
+      "dependencies": ["DEV-005"],
+      "rules": [
+        "必须包含快速开始",
+        "必须包含常见问题"
+      ],
+      "constraints": {
+        "max_duration": "1小时"
+      },
       "created_at": "2026-02-28T00:00:00Z"
     }
   ],
