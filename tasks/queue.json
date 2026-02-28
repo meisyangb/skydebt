@@ -1,0 +1,60 @@
+{
+  "pending": [
+    {
+      "id": "task_001",
+      "title": "设计像素图片生成模型架构",
+      "description": "设计文字到像素图片的生成模型架构，包括编码器、解码器和扩散模块",
+      "assigned_agent": "architect",
+      "priority": 1,
+      "status": "pending",
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "task_002",
+      "title": "实现文本编码器模块",
+      "description": "实现CLIP文本编码器，将输入文字转换为特征向量",
+      "assigned_agent": "developer",
+      "priority": 2,
+      "status": "pending",
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "task_003",
+      "title": "实现像素风格扩散模型",
+      "description": "实现扩散模型核心逻辑，支持像素风格图片生成",
+      "assigned_agent": "developer",
+      "priority": 2,
+      "status": "pending",
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "task_004",
+      "title": "实现图像解码器",
+      "description": "实现VQGAN解码器，将潜空间向量转换为像素图片",
+      "assigned_agent": "developer",
+      "priority": 2,
+      "status": "pending",
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "task_005",
+      "title": "编写模型测试用例",
+      "description": "为各个模块编写单元测试和集成测试",
+      "assigned_agent": "tester",
+      "priority": 3,
+      "status": "pending",
+      "created_at": "2026-02-28T00:00:00Z"
+    },
+    {
+      "id": "task_006",
+      "title": "代码审查和优化",
+      "description": "审查所有代码，提出优化建议和安全检查",
+      "assigned_agent": "reviewer",
+      "priority": 4,
+      "status": "pending",
+      "created_at": "2026-02-28T00:00:00Z"
+    }
+  ],
+  "in_progress": [],
+  "completed": []
+}

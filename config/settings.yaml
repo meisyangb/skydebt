@@ -1,0 +1,16 @@
+workflow:
+  max_iterations: 100
+  auto_commit: true
+  commit_message_prefix: "[AI-Agent]"
+  
+git:
+  auto_push: false
+  branch: "main"
+  
+task_queue:
+  file: "tasks/queue.json"
+  completed_file: "tasks/completed.json"
+  
+logging:
+  level: "INFO"
+  file: "logs/workflow.log"

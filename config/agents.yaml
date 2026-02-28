@@ -1,0 +1,46 @@
+agents:
+  architect:
+    name: "架构师"
+    role: "系统架构设计和模块规划"
+    capabilities:
+      - 设计系统架构
+      - 定义模块接口
+      - 规划数据流
+    priority: 1
+    
+  developer:
+    name: "开发者"
+    role: "代码实现和功能开发"
+    capabilities:
+      - 编写核心代码
+      - 实现模型逻辑
+      - 优化性能
+    priority: 2
+    
+  tester:
+    name: "测试员"
+    role: "测试验证和质量保证"
+    capabilities:
+      - 编写测试用例
+      - 执行测试
+      - 报告问题
+    priority: 3
+    
+  reviewer:
+    name: "审查员"
+    role: "代码审查和优化建议"
+    capabilities:
+      - 代码审查
+      - 安全检查
+      - 性能分析
+    priority: 4
+
+project:
+  name: "文字生成像素图片模型"
+  description: "使用AI生成像素风格的图片"
+  version: "1.0.0"
+  
+model:
+  type: "diffusion"
+  image_size: 64
+  pixel_style: true
